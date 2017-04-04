@@ -10,6 +10,8 @@ var END_INPUT = false;
 var LAST_CHAR = "";
 var LAST_IND = -1;
 
+var TIME = 0.0;
+
 var PLAYING = true;
 
 function ReadData(data)
@@ -34,8 +36,6 @@ function Update() { }
 function MainState()
 {
 	var state = new State();
-
-	var time = 0.0;
 
 	var ss = [
 		new Vec2(-0.75, -0.5),
@@ -67,6 +67,8 @@ function MainState()
 	var pb = new Button(new Rect(0, 0, 100, 100), "");
 	var rb = new Button(new Rect(0, 0, 100, 100), "");
 
+	var ib = new Button(new Rect(0, 0, 100, 100), "");
+
 	state.initFunc = function()
 	{
 		state.sprites = state.sprites.concat(lights);
@@ -77,11 +79,15 @@ function MainState()
 		pb.normalImg = pb.hoveredImg = pb.clickedImg = pb.disabledImg = "pause.png";
 		rb.normalImg = rb.hoveredImg = rb.clickedImg = rb.disabledImg = "reset.png";
 
+		ib.normalImg = ib.hoveredImg = ib.clickedImg = ib.disabledImg = "input.png";
+
 		state.ui.push(bb);
 		state.ui.push(fb);
 		state.ui.push(sb);
 		state.ui.push(pb);
 		state.ui.push(rb);
+
+		state.ui.push(ib);
 
 		state.ui.push(cdt);
 	}
@@ -110,6 +116,9 @@ function MainState()
 		fb.rect.x = fs;
 		pb.rect.x = sb.rect.x = fs / 2;
 		rb.rect.y = pb.rect.y = sb.rect.y = fb.rect.y = bb.rect.y = HEIGHT / 2 - fs / 1.5;
+		ib.rect.y = -HEIGHT / 2 + 10;
+		ib.rect.x = -fs * 0.375;
+		ib.rect.width = ib.rect.height = fs * 0.75;
 
 		pb.disabled = !PLAYING;
 		pb.visible = PLAYING;
@@ -118,40 +127,33 @@ function MainState()
 
 		if(!END_INPUT)
 		{
-			if(time > BLINK_SPEED * CURRENT_INPUT.length)
+			if(TIME / BLINK_SPEED > CURRENT_INPUT.length)
 			{
 				END_INPUT = true;
 				PLAYING = false;
 				cdt.text = "";
 			} else
 			{
-				var ci = Math.floor(time / BLINK_SPEED);
-				if(LAST_IND != ci)
-				{
-					var character = CURRENT_INPUT[ci].toUpperCase();
-					cdt.text = character;
-					LAST_IND = ci;
-					display(character);
-				}
-				if(PLAYING) { time += DELTA_TIME; }
+				display();
+				if(PLAYING) { TIME += DELTA_TIME; }
 			}
 		} else
 		{
-			display("SPACE");
+			display();
 		}
 
 		if(bb.clicked)
 		{
-			if(time / BLINK_SPEED >= 1)
+			if(TIME / BLINK_SPEED >= 1)
 			{
-				time = Math.floor(time / BLINK_SPEED) * BLINK_SPEED - BLINK_SPEED;
+				TIME = Math.floor(TIME / BLINK_SPEED) * BLINK_SPEED - BLINK_SPEED;
 			}
 		}
 		if(fb.clicked)
 		{
-			if(time / BLINK_SPEED < CURRENT_INPUT.length - 1)
+			if(TIME / BLINK_SPEED < CURRENT_INPUT.length - 1)
 			{
-				time = Math.floor(time / BLINK_SPEED) * BLINK_SPEED + BLINK_SPEED;
+				TIME = Math.floor(TIME / BLINK_SPEED) * BLINK_SPEED + BLINK_SPEED;
 			}
 		}
 		if(pb.clicked)
@@ -163,21 +165,21 @@ function MainState()
 			if(END_INPUT)
 			{
 				END_INPUT = false;
-				time = 0;
+				TIME = 0;
 			} else
 			{
-				time = Math.floor(time / BLINK_SPEED) * BLINK_SPEED;
+				TIME = Math.floor(TIME / BLINK_SPEED) * BLINK_SPEED;
 			}
 			PLAYING = true;
 		}
 		if(rb.clicked)
 		{
-			time = 0;
+			TIME = 0;
 			PLAYING = false;
 			LAST_IND = "";
 		}
 
-		if(time / BLINK_SPEED < 1)
+		if(TIME / BLINK_SPEED < 1)
 		{
 			bb.disabled = true;
 			bb.visible = false;
@@ -186,10 +188,42 @@ function MainState()
 			bb.disabled = false;
 			bb.visible = true;
 		}
+		if(TIME / BLINK_SPEED > CURRENT_INPUT.length)
+		{
+			fb.disabled = true;
+			fb.visible = false;
+		} else
+		{
+			fb.disabled = false;
+			fb.visible = true;
+		}
+
+		if(ib.clicked)
+		{
+			var t = window.prompt("Enter text to display:", "Hello there");
+			if(t != null)
+			{
+				CURRENT_INPUT = t;
+				TIME = 0;
+				END_INPUT = true;
+				PLAYING = false;
+				LAST_IND = "";
+			}
+		}
 	}
 
-	function display(char)
+	function display()
 	{
+		var ci = Math.floor(TIME / BLINK_SPEED);
+		var char = "";
+		if(ci >= CURRENT_INPUT.length)
+		{
+			char = " ";
+		} else
+		{
+			char = CURRENT_INPUT[ci].toUpperCase();
+		}
+		cdt.text = char;
 		if(char == " " || char == "SPACE")
 		{
 			lights[0].imagePath = "off.png";
@@ -205,7 +239,8 @@ function MainState()
 		{
 			return;
 		}
-		if(LAST_CHAR == char)
+
+		if(ci >= 1 && CURRENT_INPUT[ci - 1].toUpperCase() == char)
 		{
 			lights[6].imagePath = "on.png";
 			lights[0].imagePath = "off.png";
@@ -216,7 +251,7 @@ function MainState()
 			lights[5].imagePath = "off.png";
 			return;
 		}
-		LAST_CHAR = char;
+
 		var seq = Characters[char];
 		for(var i = 0; i < lights.length; i++)
 		{
