@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Jaggler3/SLAPS/issues"
   },
-  "homepage": "https://github.com/Jaggler3/SLAPS#readme"
+  "homepage": "https://github.com/Jaggler3/SLAPS#readme",
+  "dependencies": {
+    "firebase-tools": "^3.19.0"
+  }
 }
