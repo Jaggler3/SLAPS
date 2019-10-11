@@ -28,7 +28,7 @@ The combination of dots for each character are written into the `public/chars.sd
   ( ) ( ) ( )
 
       "0"
-(o) ( ) ( ) ( )
+(&#9210;) ( ) ( ) ( )
   ( ) ( ) ( )
   
       "1"
