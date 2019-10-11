@@ -1,3 +1,9 @@
+/*
+
+	This file is a slight modification of DE2D (https://github.com/Jaggler3/diesel-engine)
+
+*/
+
 //MAIN CONSTANTS
 var canvas;
 var context;
