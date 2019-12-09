@@ -1,5 +1,5 @@
 # SLAPS
-SLAPS is a live-string reading system consisting of an array of dots with on/off values in which the combinations represent characters in the alphabet. These characters are display through the set of dots one after the other at a specified rate to represent words and sentences.
+SLAPS is a live-string reading system consisting of an array of dots with on/off values in which the different combinations represent alphanumeric characters. These characters are display through the set of dots one after the other at a specified rate to represent words and sentences.
 
 Through memorization of these combinations, one can eventually read a string of text as it is being created (for example as someone speaks).
 
