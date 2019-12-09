@@ -111,7 +111,7 @@ function MainState()
 		}
 
 		//update currentCharSprite
-		var fontSize = (HEIGHT < WIDTH ? HEIGHT : WIDTH) / 2 - height;
+		var fontSize = (HEIGHT < WIDTH ? HEIGHT : WIDTH) / 2 - height * 1.5;
 		currentCharSprite.position.y = (HEIGHT / 2) - (fontSize / 2);
 		currentCharSprite.font = fontSize + "px Arial";
 		currentCharSprite.style = "white";

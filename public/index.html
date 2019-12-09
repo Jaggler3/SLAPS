@@ -11,14 +11,23 @@
 </head>
 <body>
 	<!-- resources -->
-	<img id="input.png" src="input.png" width="0px" height="0px" style="position:absolute"></img>
-	<img id="back.png" src="back.png" width="0px" height="0px" style="position:absolute"></img>
-	<img id="forward.png" src="forward.png" width="0px" height="0px" style="position:absolute"></img>
-	<img id="play.png" src="play.png" width="0px" height="0px" style="position:absolute"></img>
-	<img id="pause.png" src="pause.png" width="0px" height="0px" style="position:absolute"></img>
-	<img id="reset.png" src="reset.png" width="0px" height="0px" style="position:absolute"></img>
-	<img id="off.png" src="off.png" width="0px" height="0px" style="position:absolute"></img>
-	<img id="on.png" src="on.png" width="0px" height="0px" style="position:absolute"></img>
+	<style>
+		.res {
+			width: 0px;
+			height: 0px;
+			position: absolute;
+			display: none;
+			opacity: 0;
+		}
+	</style>
+	<img id="input.png" src="input.png" class="res"></img>
+	<img id="back.png" src="back.png" class="res"></img>
+	<img id="forward.png" src="forward.png" class="res"></img>
+	<img id="play.png" src="play.png" class="res"></img>
+	<img id="pause.png" src="pause.png" class="res"></img>
+	<img id="reset.png" src="reset.png" class="res"></img>
+	<img id="off.png" src="off.png" class="res"></img>
+	<img id="on.png" src="on.png" class="res"></img>
 	
 	<!-- rendering canvas -->
 	<canvas id="main-canvas"></canvas>
